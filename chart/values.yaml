@@ -27,13 +27,12 @@ deployment:
           cpu: 1000m
           memory: 256Mi
       volumeMounts:
-        - name: storage
+        - name: config
           mountPath: /opt/data
-          subPath: maintainerr/config
   volumes:
-    - name: storage
+    - name: config
       type: pvc
-      typeName: storage-pvc
+      typeName: config-pvc
 
 ingresses:
   - name: ingress
@@ -61,12 +60,12 @@ ingresses:
             servicePort: 80
 
 pvcs:
-  - name: storage-pvc
-    storageClassName: local-path-persistent
+  - name: config-pvc
+    storageClassName: longhorn
+    role: config
     accessModes:
       - ReadWriteOnce
     size: 1Gi
-    volumeMode: Filesystem
 
 services:
   - name: service
